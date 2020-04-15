@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block title %}<title>Pendientes</title>{% endblock %}
+
+{% block content %}
+<div id="wrapper2">
+    <h2>{{ title }}</h2>
+
+    {% if request.user.is_authenticated %}
+        {% if filter %}
+            <ul>
+                {% for pend in filter %}
+                <li>
+                    <a href="{% url 'work-detail' pend.id %}">{{ pend.site }}</a>  ({{ pend.oppera }})
+                </li>
+                {% endfor %}
+            </ul>
+        
+        {% else %}
+        <ul>
+            <h2>Resultado de la busqueda</h2>
+            {% for pend in object_list %}
+            <li>
+                <a href="{% url 'work-detail' pend.id %}">{{ pend.site }}</a>  ({{ pend.oppera }})
+            </li>
+            {% endfor %}
+        </ul>
+        
+        {% endif %}
+    {% endif %}
+    </div>
+        
+    {% endblock %}

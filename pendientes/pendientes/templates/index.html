@@ -1,0 +1,39 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+{% load static %}
+
+</div>
+
+    <div id="wrapper">
+        <section>
+            <ul id="gallery">
+                <li>
+                    
+                    <h4>
+                        <a href="{% url 'only-cs' %}">Conformes Supervisor enviados (sin visitar) <br> <h3>{{ num_only_cs }}</h3></a>
+                    </h4>
+                </li>
+                <li>
+                    <h4>
+                        <a href="{% url 'pend-to-send' %}">Pendientes a enviar por Ericsson <br> <h3>{{ num_pend_to_send }}</h3></a><br>
+                        <a href="{% url 'pend-az-tool' %}">(Az tool {{ num_type_pend_az }})</a>   <br>
+                        <a href="{% url 'pend-doc' %}">(Documentacion {{ num_type_pend_doc }})</a> <br>
+                        <a href="{% url 'pend-pic' %}">(Fotos a servidor {{ num_type_pend_pics }})</a>  <br>
+                        <a href="{% url 'pend-install' %}">(Instalacion {{ num_type_pend_instal }})</a>  <br>
+
+                    </h4>
+                </li>
+                <li>
+                    <h4>
+                        <a href="{% url 'pend-contested' %}">Pendientes enviados a Antel (sin respuesta) <br> <h3>{{ num_pend_sent }}</h3></a>
+                    </h4>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+
+    
+{% endblock %}

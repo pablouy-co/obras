@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div id="wrapper2">
+
+    <h1>Ingreso de nuevo CS</h1>
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form">   
+        {% csrf_token %}
+        <p>{{ form.cs_date }} Fecha conforme supervisor</p>   
+        <p>{{ form.site }} Sigla del sitio</p>
+        <p>{{ form.oppera }} No. Oppera</p>
+        <p>{{ form.cs_comments }} Comentarios supervisor de obra</p>
+        <p>{{ form.cs_pics_link }} Enlace de fotos de supevision de obra</p>
+        <button type="submit" formmethod="post">Enviar</button>
+    </form>
+
+</div>
+
+{% endblock content %} 
+

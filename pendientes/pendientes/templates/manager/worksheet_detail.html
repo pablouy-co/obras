@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'manager/css/style.css' %}">
+
+{% block content %}
+
+<div id="wrapper2">
+    <div id=tabla1>
+        <div id=cabtab1>
+            {{ worksheet.site }} ({{ worksheet.oppera }})
+        </div>
+        <div id=cuerpotab1>
+            <p>{% if worksheet.cs_date %}<strong>Fecha conforme supervisor: </strong>{{ worksheet.cs_date|date:"d/m/Y"}}<br>{% endif %}</p>
+            <p>{% if worksheet.cs_comments %} <strong>Comentarios conforme supervisor: </strong>{{ worksheet.cs_comments }}<br>{% endif %}</p>
+            <p>{% if worksheet.cs_pics_link %}<strong>Fotos conforme supervisor: </strong><a href="{{ worksheet.cs_pics_link }}">{{ worksheet.cs_pics_link }}</a><br>{% endif %}</p>
+            <p>{% if worksheet.pendings_date %}<strong>Fecha según Antel: </strong>{{ worksheet.pendings_date|date:"d/m/Y" }}<br>{% endif %}</p>
+            <p>{% if worksheet.claim_date %}<strong>Fecha reclamo de pendientes a ASP: </strong>{{ worksheet.claim_date|date:"d/m/Y" }}<br>{% endif %}</p>
+            <p>{% if worksheet.asp %}<strong>ASP: </strong>{{ worksheet.asp }}<br>{% endif %}</p>
+            <p>{% if worksheet.claim_pending_comments %}<strong>Comentarios reclamos: </strong>{{ worksheet.claim_pending_comments }}<br>{% endif %}</p>
+            <p>{% if worksheet.ca_date %}<strong>Fecha CA: </strong>{{ worksheet.ca_date|date:"d/m/Y" }}<br>{% endif %}</p>
+            <p>{% if worksheet.ca_comments %}<strong>Comentarios CA: </strong>{{ worksheet.ca_comments }}<br>{% endif %}</p>
+            <p>{% if worksheet.ca_pics_link %}<strong>Fotos CA: </strong>{{ worksheet.ca_pics_link }}<br>{% endif %}</p>
+        </div>
+    </div>
+    {% if user.get_username == 'admin' %}
+        <a href="{% url 'update-work' worksheet.id %}">Editar</a>
+    {% endif %}
+</div>
+
+
+{% endblock %}
