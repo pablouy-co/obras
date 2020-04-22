@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+<h2>{{ object.site}} ({{ object.oppera }})</h2>
+
+<form action="" method="post">{% csrf_token %}
+    <br><h4>Confirma borrar esta obra?</h4><br>
+    <input type="submit" value="BORRAR" />
+</form>
+
+{% endblock %}

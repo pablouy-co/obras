@@ -35,7 +35,7 @@ a.selected, a:hover{
 
 #wrapper2{
   max-width: 1500px;
-  margin: 50px 0 0 100px; /*0 arriba y abajo y automatico a la izquierda y derecha*/
+  margin: 50px 250px 250px 400px; /*0 arriba y abajo y automatico a la izquierda y derecha*/
   padding: 0 5% ;/*Espacio entre el contenedor y el contendio*/
   text-align: left;
   font-family: 'Open Sans';
@@ -48,6 +48,16 @@ a.selected, a:hover{
   padding: 0;
   list-style: none;
 }
+
+#login{
+  font-family: 'Open';
+  max-width: 2000px;
+  margin: 0 auto; /*0 arriba y abajo y automatico a la izquierda y derecha*/
+  padding: 0 5% ;/*Espacio entre el contenedor y el contendio*/
+  text-align: center;
+
+}
+
 
 
 
@@ -79,14 +89,16 @@ header{
 }
 
 #gallery{
-  margin: 0;
-  padding: 0;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  margin-right: 0px;
+  margin-left: 100px;
   list-style: none;
 
 }
 #gallery li{
-  width: 20%;
-  margin: 5%;
+  width: 15%;
+  margin: 2.5%;
   float: left;
   background-color: gainsboro;
   border-style: solid;

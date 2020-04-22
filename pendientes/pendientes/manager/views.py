@@ -23,8 +23,11 @@ def index(request):
     num_pend_to_send = WorkSheet.objects.filter(                                #pendientes a enviar por Ericsson
         ~Q(pendings_date = None) & Q(ca_date = None)
         ).count()
-    num_pend_sent = WorkSheet.objects.filter(                                   #pendientes enviados a Antel
-        ~Q(pendings_date = None) & ~Q(ca_date = None) & Q(closed = 'n')
+    num_pend_sent = WorkSheet.objects.filter(                                   #pendientes enviados a Antel (sin respuesta y estan del lado de Antel)
+        ~Q(pendings_date = None) & ~Q(ca_date = None) & Q(closed = 'n') & Q(pend_side = 'a')
+        ).count()
+    num_pend_sent_nr = WorkSheet.objects.filter(                                   #pendientes enviados a Antel y volvieron (cancha de Ericsson)
+        ~Q(pendings_date = None) & ~Q(ca_date = None) & Q(closed = 'n') & Q(pend_side = 'e')
         ).count()
     num_type_pend_az = WorkSheet.objects.filter(                                #pendientes de AZ tool
         Q(pend_type__pend_type__contains = 'AZ tool') & Q(closed = 'n') & Q(ca_date = None)
@@ -53,10 +56,11 @@ def index(request):
             'num_type_pend_doc':num_type_pend_doc,
             'num_type_pend_pics':num_type_pend_pics,
             'num_type_pend_instal':num_type_pend_instal,
+            'num_pend_sent_nr':num_pend_sent_nr,
             }
     )
 
-'''----------------VISTAS----------------------'''
+'''-------------------------------------------------------------------------VISTAS-------------------------------------------------------------------------------'''
 
 #Detalle de la obra (worksheet_detail.html)
 class ViewWorkDetail(generic.DetailView):
@@ -113,13 +117,31 @@ def pendtosend(request):
         }
     )
 
-#Muestro los que tienen pendientes enviados a Antel (worksheet_list.html)
+#Muestro los que tienen pendientes enviados a Antel y no han sido contestados por Antel (pend_side = 'a')(worksheet_list.html)
 @login_required
 def pendcontested(request):
 
-    title = 'Obras con pendientes enviados a Antel'
+    title = 'Obras con pendientes, solucionados y enviados a Antel, pero no han contestado'
     filter = WorkSheet.objects.filter(
-            ~Q(pendings_date = None) & ~Q(ca_date = None) & Q(closed = 'n')
+            ~Q(pendings_date = None) & ~Q(ca_date = None) & Q(closed = 'n') & Q(pend_side = 'a')
+        )
+    
+    return render(
+        request,
+        'manager/worksheet_list.html',
+        context = {
+            'filter':filter,
+            'title':title,
+        }
+    )
+
+#Muestro los que tienen pendientes enviados a Antel, volvieron, y Ericsson tiene que voler a responder (pend_side = 'e')(worksheet_list.html)
+@login_required
+def pendcontestedNR(request):
+
+    title = 'Obras con pendientes enviados a Antel y devueltos (Ericsson debe replicar)'
+    filter = WorkSheet.objects.filter(
+            ~Q(pendings_date = None) & ~Q(ca_date = None) & Q(closed = 'n') & Q(pend_side = 'e')
         )
     
     return render(
@@ -204,12 +226,12 @@ def pendpic(request):
     )
 
 
-'''----------------CREAR y EDITAR----------------------'''
+'''--------------------------------------------------------------CREAR, EDITAR, BORRAR----------------------------------------------------------------'''
 
 #Crea nuevo CS
 class AddPending(PermissionRequiredMixin,generic.CreateView):
     model = WorkSheet
-    permission_required = 'gestion.can_mark_returned'
+    permission_required = 'manager.can_mark_returned'
     form_class = WorkSheetForm
     template_name = 'manager/cs_form.html'
     success_url = "/manager/workdetail/{id}"
@@ -218,17 +240,23 @@ class AddPending(PermissionRequiredMixin,generic.CreateView):
 #Edita una obra existente
 class UpdateWork(PermissionRequiredMixin,generic.UpdateView):
     model = WorkSheet
-    permission_required = 'gestion.can_mark_returned'
+    permission_required = 'manager.can_mark_returned'
     form_class = UpdateWorkForm
     template_name = 'manager/worksheet_form.html'
     success_url = "/manager/workdetail/{id}"
 
+    
+class DeleteWorkSheet(PermissionRequiredMixin,generic.DeleteView):
+    model = WorkSheet
+    permission_required = 'manager.can_mark_returned'
+    success_url = "/manager/onlycs/"
 
-'''-----------------------EXPORT--------------------------------------'''
+
+'''------------------------------------------------------------------------EXPORT----------------------------------------------------------------------------'''
 @login_required
 def export_users_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="site-list.xls"'
+    response['Content-Disposition'] = 'attachment; filename="listado de obras.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Sites')
@@ -242,7 +270,7 @@ def export_users_xls(request):
 
     columns = [
         'Sigla', 'Oppera','Fecha CS','Comentarios CS','Fecha SA',
-        'Fecha pendientes a ASP','ASP','Comentarios reclamo pendientes','Fecha CA','Comentarios CA','Cerrado',
+        'Fecha pendientes a ASP','ASP','Comentarios reclamo pendientes','Fecha CA','Comentarios CA','Fotos para Antel','Cerrado',
         ]
 
     for col_num in range(len(columns)):
@@ -255,7 +283,7 @@ def export_users_xls(request):
 
     rows = WorkSheet.objects.all().values_list(
         'site', 'oppera','cs_date','cs_comments','pendings_date','claim_date','asp',
-        'claim_pending_comments','ca_date','ca_comments','closed',
+        'claim_pending_comments','ca_date','ca_comments','ca_pics_link','closed',
         )
     for row in rows:
         row_num += 1
@@ -264,4 +292,3 @@ def export_users_xls(request):
 
     wb.save(response)
     return response
-

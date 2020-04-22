@@ -7,7 +7,7 @@ class DateInput(forms.DateInput):
 class WorkSheetForm(forms.ModelForm):
     class Meta:
         model = WorkSheet
-        fields = ['site','oppera','cs_date','cs_comments','cs_pics_link',]
+        fields = ['site','oppera','cs_date','cs_comments',]
         widgets = {'cs_date':DateInput}
 
 class UpdateWorkForm(forms.ModelForm):
@@ -23,6 +23,7 @@ class UpdateWorkForm(forms.ModelForm):
             'ca_comments',
             'ca_pics_link',
             'closed',
+            'pend_side',
         ]
         widgets = {'pendings_date':DateInput,'claim_date':DateInput,'ca_date':DateInput,}
 

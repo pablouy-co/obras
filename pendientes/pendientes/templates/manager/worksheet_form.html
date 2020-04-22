@@ -2,19 +2,23 @@
 
 {% block content %}
 <div id="wrapper2">
-    <h3>Editar {{worksheet.site}} ({{worksheet.oppera}}) </h3>
+    <h4>{{worksheet.site}} ({{worksheet.oppera}}) </h4>
+    <h5>Conforme supervisor ingresado el {{ worksheet.cs_date|date:"d/m/Y" }}</h5>
         <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form">   
-            <h4>Conforme supervisor ingresado el {{ worksheet.cs_date }}</h4>
+
             {% csrf_token %}   
                 <p>{{ form.pendings_date }}Fecha SA</p>
                 <p>{{ form.claim_date }}Fecha reclamo de pendientes a ASP</p> 
                 <p>{{ form.asp }}ASP </p>
                 <p>{{ form.claim_pending_comments }}Comentarios sobre pendientes </p>
+                <p>{{ form.pend_type }}Tipo de pendientes </p>
+                <br>
                 <p>{{ form.ca_date }}Fecha de envío de CA y pendientes </p>
                 <p>{{ form.ca_comments }}Comentarios CA y pendientes </p>
                 <p>{{ form.ca_pics_link }}Enlace fotos para servidor de Antel</p>
-                <p>{{ form.pend_type }}Tipo de pendientes </p>
+                <br>
                 <p>{{ form.closed }}Obra cerrada</p>
+                <p>{{ form.pend_side }}Responsable de responder</p>
 
                 <button type="submit" formmethod="post">Enviar</button>
         </form>

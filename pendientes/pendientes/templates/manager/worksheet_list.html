@@ -6,12 +6,17 @@
 <div id="wrapper2">
     <h2>{{ title }}</h2>
 
+
     {% if request.user.is_authenticated %}
         {% if filter %}
+        <h6>(Ordenados por fecha de Conforme Supervisor enviado)</h6>
             <ul>
                 {% for pend in filter %}
                 <li>
-                    <a href="{% url 'work-detail' pend.id %}">{{ pend.site }}</a>  ({{ pend.oppera }})
+                    <a href="{% url 'work-detail' pend.id %}">{{ pend.site }} ({{ pend.oppera }})</a>
+                    {% if user.get_username == 'admin' %}
+                        <a href="{% url 'delete-work' pend.id %}">[Borrar]</a>
+                    {% endif %}
                 </li>
                 {% endfor %}
             </ul>
@@ -19,9 +24,13 @@
         {% else %}
         <ul>
             <h2>Resultado de la busqueda</h2>
+            <h6>(Ordenados por fecha de Conforme Supervisor enviado)</h6>
             {% for pend in object_list %}
             <li>
-                <a href="{% url 'work-detail' pend.id %}">{{ pend.site }}</a>  ({{ pend.oppera }})
+                <a href="{% url 'work-detail' pend.id %}">{{ pend.site }} ({{ pend.oppera }})</a>
+                {% if user.get_username == 'admin' %}
+                    <a href="{% url 'delete-work' pend.id %}">[Borrar]</a>
+                {% endif %}
             </li>
             {% endfor %}
         </ul>

@@ -1,7 +1,24 @@
-{% extends "base_generic.html" %}
+
 
 {% block content %}
-<p>Logged out!</p>  
 
-<a href="{% url 'login'%}">Click here to login again.</a>
+<div id="logueo">
+    <a href="{% url 'login'%}">Click aqui para volverse a loguear.</a>
+
+</div>
+
+<style>
+  #logueo{
+    font-family: 'Open Sans';
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    justify-content: center;
+    text-align: center;
+    padding: 0 1rem;
+    margin: 1rem;
+  }
+
+</style>
+
+
 {% endblock %}

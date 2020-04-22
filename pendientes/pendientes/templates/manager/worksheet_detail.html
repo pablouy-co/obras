@@ -21,7 +21,15 @@
             <p>{% if worksheet.claim_pending_comments %}<strong>Comentarios reclamos: </strong>{{ worksheet.claim_pending_comments }}<br>{% endif %}</p>
             <p>{% if worksheet.ca_date %}<strong>Fecha CA: </strong>{{ worksheet.ca_date|date:"d/m/Y" }}<br>{% endif %}</p>
             <p>{% if worksheet.ca_comments %}<strong>Comentarios CA: </strong>{{ worksheet.ca_comments }}<br>{% endif %}</p>
-            <p>{% if worksheet.ca_pics_link %}<strong>Fotos CA: </strong>{{ worksheet.ca_pics_link }}<br>{% endif %}</p>
+            <p>{% if worksheet.ca_pics_link == 'n' %}
+                <strong>Fotos instalacion para Antel: NO </strong>
+                {% elif worksheet.ca_pics_link == 's'  %}
+                <strong>Fotos instalacion para Antel: SI</strong>
+                {% else %}
+                <strong>Fotos instalacion para Antel: Sin especificar</strong>
+                <br>{% endif %}</p>
+            <p>{% if worksheet.closed == 'n' %}<strong>Obra cerrada: NO </strong> {% else %} <strong>Obra cerrada: SI </strong><br>{% endif %}</p>
+
         </div>
     </div>
     {% if user.get_username == 'admin' %}

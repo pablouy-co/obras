@@ -30,6 +30,11 @@
                         <a href="{% url 'pend-contested' %}">Pendientes enviados a Antel (sin respuesta) <br> <h3>{{ num_pend_sent }}</h3></a>
                     </h4>
                 </li>
+                <li>
+                    <h4>
+                        <a href="{% url 'pend-contestedNR' %}">Pendientes enviados y devueltos (Ericsson debe replicar) <br> <h3>{{ num_pend_sent_nr }}</h3></a>
+                    </h4>
+                </li>
             </ul>
         </section>
     </div>
